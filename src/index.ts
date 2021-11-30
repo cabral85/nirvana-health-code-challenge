@@ -16,7 +16,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/products/', routes.productRouter);
+app.use('/', routes.coalescesRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);
