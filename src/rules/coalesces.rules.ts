@@ -28,13 +28,13 @@ const getCoalesce = async (memberId: number) => {
 
 const getApiResponse = async (memberId: number) => {
   const regex = new RegExp(urlRegex);
-  const urls = listUrls?.split(',');
+  const urls = listUrls?.split(',') || '';
   // eslint-disable-next-line no-array-constructor
   const response = new Array<apiResponseInterface>();
-  for (const url in urls) {
+  for (const url of urls) {
     if (url.match(regex)) {
-      const result = await axios.get(`${url}/${memberId}`);
-      response.map(result.data);
+      const result = await axios.get(`${url}?member_id=${memberId}`);
+      response.push(result.data);
     }
   };
   return response;
