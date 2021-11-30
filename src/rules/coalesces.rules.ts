@@ -17,13 +17,13 @@ interface apiResponseInterface {
 const getCoalesce = async (memberId: number) => {
   const apiResponse = await getApiResponse(memberId);
 
-  if (strategy === 'average') {
-    return getAverage(apiResponse);
-  } else if (strategy === 'maximum') {
+  if (strategy === 'maximum') {
     return getMaximum(apiResponse);
   } else if (strategy === 'minimum') {
     return getMinimum(apiResponse);
   }
+  // Default return
+  return getAverage(apiResponse);
 };
 
 const getApiResponse = async (memberId: number) => {
@@ -62,12 +62,13 @@ const getMaximum = async (apiResponse: Array<apiResponseInterface>) => {
   const result: apiResponseInterface = {
     deductible: 0, oop_max: 0, stop_loss: 0,
   };
+  let currentResult = 0;
   for (const response of apiResponse) {
     if (response) {
       const { deductible, oop_max: oopMax, stop_loss: stopLoss } = response;
-      if (deductible > result.deductible &&
-        oopMax > result.oop_max &&
-        stopLoss > result.stop_loss) {
+      const calcCurrentResult = deductible + oopMax + stopLoss;
+      if (calcCurrentResult > currentResult) {
+        currentResult = calcCurrentResult;
         result.deductible = deductible;
         result.oop_max = oopMax;
         result.stop_loss = stopLoss;
@@ -81,12 +82,13 @@ const getMinimum = async (apiResponse: Array<apiResponseInterface>) => {
   const result: apiResponseInterface = {
     deductible: 0, oop_max: 0, stop_loss: 0,
   };
+  let currentResult = 0;
   for (const response of apiResponse) {
     if (response) {
       const { deductible, oop_max: oopMax, stop_loss: stopLoss } = response;
-      if (deductible < result.deductible &&
-        oopMax < result.oop_max &&
-        stopLoss < result.stop_loss) {
+      const calcCurrentResult = deductible + oopMax + stopLoss;
+      if (calcCurrentResult < currentResult) {
+        currentResult = calcCurrentResult;
         result.deductible = deductible;
         result.oop_max = oopMax;
         result.stop_loss = stopLoss;
