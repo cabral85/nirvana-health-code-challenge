@@ -41,15 +41,59 @@ const getApiResponse = async (memberId: number) => {
 };
 
 const getAverage = async (apiResponse: Array<apiResponseInterface>) => {
-  return apiResponse;
+  const result: apiResponseInterface = {
+    deductible: 0, oop_max: 0, stop_loss: 0,
+  };
+  for (const response of apiResponse) {
+    if (response) {
+      const { deductible, oop_max: oopMax, stop_loss: stopLoss } = response;
+      result.deductible += deductible;
+      result.oop_max += oopMax;
+      result.stop_loss += stopLoss;
+    }
+  };
+  result.deductible = Math.round(result.deductible / apiResponse.length);
+  result.oop_max = Math.round(result.oop_max / apiResponse.length);
+  result.stop_loss = Math.round(result.stop_loss / apiResponse.length);
+  return result;
 };
 
 const getMaximum = async (apiResponse: Array<apiResponseInterface>) => {
-  return apiResponse;
+  const result: apiResponseInterface = {
+    deductible: 0, oop_max: 0, stop_loss: 0,
+  };
+  for (const response of apiResponse) {
+    if (response) {
+      const { deductible, oop_max: oopMax, stop_loss: stopLoss } = response;
+      if (deductible > result.deductible &&
+        oopMax > result.oop_max &&
+        stopLoss > result.stop_loss) {
+        result.deductible = deductible;
+        result.oop_max = oopMax;
+        result.stop_loss = stopLoss;
+      }
+    }
+  };
+  return result;
 };
 
 const getMinimum = async (apiResponse: Array<apiResponseInterface>) => {
-  return apiResponse;
+  const result: apiResponseInterface = {
+    deductible: 0, oop_max: 0, stop_loss: 0,
+  };
+  for (const response of apiResponse) {
+    if (response) {
+      const { deductible, oop_max: oopMax, stop_loss: stopLoss } = response;
+      if (deductible < result.deductible &&
+        oopMax < result.oop_max &&
+        stopLoss < result.stop_loss) {
+        result.deductible = deductible;
+        result.oop_max = oopMax;
+        result.stop_loss = stopLoss;
+      }
+    }
+  };
+  return result;
 };
 
 export { getCoalesce };
