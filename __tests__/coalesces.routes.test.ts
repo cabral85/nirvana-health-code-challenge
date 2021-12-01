@@ -43,4 +43,8 @@ describe('Happy Path', () => {
     const res = await request(app).get('');
     expect(res.statusCode).toBe(404);
   });
+  test('Calling url with wrong parameter', async () => {
+    const res = await request(app).get('/S/S');
+    expect(res.statusCode).toBe(400);
+  });
 });

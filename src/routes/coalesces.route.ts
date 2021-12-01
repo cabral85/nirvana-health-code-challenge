@@ -10,7 +10,7 @@ const defaultStrategy = 'average';
 // eslint-disable-next-line max-len
 coalescesRouter.get('/:memberId/:strategy?', async (req: Request, res: Response) => {
   const { params } = req;
-  if (params.memberId) {
+  if (params.memberId && Number(params.memberId)) {
     const memberId = Number(params.memberId);
     const strategy = params.strategy || defaultStrategy;
     const result = await coalesceRules.getCoalesce(memberId, strategy);
