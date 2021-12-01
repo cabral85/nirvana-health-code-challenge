@@ -3,7 +3,6 @@ import axios from 'axios';
 
 dotenv.config();
 
-const strategy = process.env.STRATEGY;
 const listUrls = process.env.URLS;
 // eslint-disable-next-line max-len
 const urlRegex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
@@ -14,7 +13,7 @@ interface apiResponseInterface {
   oop_max: number,
 };
 
-const getCoalesce = async (memberId: number) => {
+const getCoalesce = async (memberId: number, strategy: string) => {
   const apiResponse = await getApiResponse(memberId);
 
   if (strategy === 'maximum') {
@@ -87,7 +86,7 @@ const getMinimum = async (apiResponse: Array<apiResponseInterface>) => {
     if (response) {
       const { deductible, oop_max: oopMax, stop_loss: stopLoss } = response;
       const calcCurrentResult = deductible + oopMax + stopLoss;
-      if (calcCurrentResult < currentResult) {
+      if (calcCurrentResult < currentResult || currentResult === 0) {
         currentResult = calcCurrentResult;
         result.deductible = deductible;
         result.oop_max = oopMax;

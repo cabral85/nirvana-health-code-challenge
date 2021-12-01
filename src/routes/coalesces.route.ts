@@ -5,11 +5,15 @@ import { coalesceRules } from '../rules/index';
 // eslint-disable-next-line new-cap
 export const coalescesRouter = express.Router();
 
-coalescesRouter.get('/:memberId', async (req: Request, res: Response) => {
+const defaultStrategy = 'average';
+
+// eslint-disable-next-line max-len
+coalescesRouter.get('/:memberId/:strategy?', async (req: Request, res: Response) => {
   const { params } = req;
   if (params.memberId) {
     const memberId = Number(params.memberId);
-    const result = await coalesceRules.getCoalesce(memberId);
+    const strategy = params.strategy || defaultStrategy;
+    const result = await coalesceRules.getCoalesce(memberId, strategy);
     if (result) {
       res.status(StatusCodes.OK).send(result);
     } else {

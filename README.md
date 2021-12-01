@@ -12,8 +12,3 @@
 ### BUILD: npm run build
 ### Start: npm run start
 ### Test: npm run test
-
-
-
-### Sorry I took more time than expected and my tests are not running by complete because I don't remember how to change my processenv variable in jest
-### I'm sending incomplete only because have passed too much time since I started, and I had a energy outstage for maybe 1 hour.
