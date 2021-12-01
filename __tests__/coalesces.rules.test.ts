@@ -53,4 +53,20 @@ describe('Happy Path', () => {
       oop_max: 5000,
     });
   });
+  test('Testing with random strategy result', async () => {
+    const mock = new MockAdapter(axios);
+    const dataUrl1 = { deductible: 1000, stop_loss: 10000, oop_max: 5000 };
+    const dataUrl2 = { deductible: 2000, stop_loss: 10000, oop_max: 5000 };
+    const dataUrl3 = { deductible: 2000, stop_loss: 10000, oop_max: 5000 };
+    mock.onGet('https://api1.com?member_id=1').reply(200, dataUrl1);
+    mock.onGet('https://api2.com?member_id=1').reply(200, dataUrl2);
+    mock.onGet('https://api3.com?member_id=1').reply(200, dataUrl3);
+
+    const result = await getCoalesce(defaultUserId, 'aaabbbdddccc');
+    expect(result).toEqual({
+      deductible: 1667,
+      stop_loss: 10000,
+      oop_max: 5000,
+    });
+  });
 });

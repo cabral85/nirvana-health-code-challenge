@@ -20,9 +20,10 @@ coalescesRouter.get('/:memberId/:strategy?', async (req: Request, res: Response)
       const unavailbleMsg = 'Something wrong happened!';
       res.status(StatusCodes.SERVICE_UNAVAILABLE).send(unavailbleMsg);
     }
+  } else {
+    const badRequestMsg = 'Was not possible to find memberId parameter';
+    res.status(StatusCodes.BAD_REQUEST).send(badRequestMsg);
   }
-  const badRequestMsg = 'Was not possible to find memberId parameter';
-  res.status(StatusCodes.BAD_REQUEST).send(badRequestMsg);
 });
 
 export default coalescesRouter;
