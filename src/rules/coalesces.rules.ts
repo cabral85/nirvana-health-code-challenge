@@ -16,13 +16,15 @@ interface apiResponseInterface {
 const getCoalesce = async (memberId: number, strategy: string) => {
   const apiResponse = await getApiResponse(memberId);
 
-  if (strategy === 'maximum') {
-    return getMaximum(apiResponse);
-  } else if (strategy === 'minimum') {
-    return getMinimum(apiResponse);
+  if (apiResponse) {
+    if (strategy === 'maximum') {
+      return getMaximum(apiResponse);
+    } else if (strategy === 'minimum') {
+      return getMinimum(apiResponse);
+    }
+    // Default return
+    return getAverage(apiResponse);
   }
-  // Default return
-  return getAverage(apiResponse);
 };
 
 const getApiResponse = async (memberId: number) => {

@@ -20,6 +20,9 @@ describe('Happy Path', () => {
     mock.onGet('https://api3.com?member_id=1').reply(200, dataUrl3);
     const res = await request(app).get(`/${defaultUserId}/average`);
     expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual({
+      deductible: 1500, stop_loss: 10000, oop_max: 5000,
+    });
   });
   // eslint-disable-next-line max-len
   test('Calling url and getting the result without passing strategy', async () => {
@@ -30,7 +33,14 @@ describe('Happy Path', () => {
     mock.onGet('https://api1.com?member_id=1').reply(200, dataUrl1);
     mock.onGet('https://api2.com?member_id=1').reply(200, dataUrl2);
     mock.onGet('https://api3.com?member_id=1').reply(200, dataUrl3);
-    const res = await request(app).get(`/${defaultUserId}/average`);
+    const res = await request(app).get(`/${defaultUserId}/minimum`);
     expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual({
+      deductible: 1000, stop_loss: 10000, oop_max: 5000,
+    });
+  });
+  test('Calling url without parameter', async () => {
+    const res = await request(app).get('');
+    expect(res.statusCode).toBe(404);
   });
 });
